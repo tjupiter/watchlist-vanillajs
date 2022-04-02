@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Watchlist</title>
+    <meta name="description" content="Movie Watchlist site for my portfolio using restapi and vanilla Javascript">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+    <header>
+        <section id="header--text-container">
+            <h1>Find Your Film</h1>
+            <a href="watchlist.html" id="header--watchlist">My Watchlist</a>
+        </section>
+    </header>
+    <main>
+        <form id="header--search-bar" role="search">
+            <i class="fa-solid fa-magnifying-glass" id="search-bar-magnifying-glass"></i>
+            <input 
+                type="search" 
+                placeholder="Search for a movie"
+                aria-label="Search for a movie"
+                id="movie-search-input"
+            />
+
+            <button type="submit" id="header--searchbutton">
+                Search
+            </button>
+        </form>
+        <section id="movie-section-container">    
+            <div id="figure-container">
+                <figure>
+                    <img src="./img/Icon.png">
+                    <figcaption>Start Exploring</figcaption>
+                </figure>
+            </div>
+        </section>
+    </main>
+
+    <script src="./index.js"></script>
+</body>
+</html>
