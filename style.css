@@ -244,3 +244,9 @@ main {
     padding: 0.2rem 1rem;
     transition: .2s all ease-in-out;
 }
+
+@media screen and (max-height: 400px) {
+    figure {
+        display: none;
+    }
+}

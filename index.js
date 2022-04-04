@@ -2,11 +2,8 @@ let searchBarValue, moviesFromSearch
 const movieCardContainer = document.querySelector('.movie-section-container')
 const figureContainer = document.querySelector('.figure-container')
 
-if (!locallyStoredMovies) { 
-    var locallyStoredMovies = [] 
-} else {
-    var locallyStoredMovies = JSON.parse(localStorage.getItem("movies"))
-}
+var locallyStoredMovies = JSON.parse(localStorage.getItem("movies"))
+// console.log(locallyStoredMovies)
 
 function getMovie(e) {
     e.preventDefault();
@@ -40,30 +37,35 @@ async function populateMovies(results) {
         const data = await res.json()
         resultsWithExtraData.push(data)
     }
+    // console.log(resultsWithExtraData)
     renderMovies(resultsWithExtraData)
 }
 
 function renderMovies(movies) {
     movieCardContainer.innerHTML = ''
     const newMovies = [...movies]
-
+    
     for (let i = 0; i < newMovies.length; i++) {
         let currentMovie = newMovies[i]
-        movieCardContainer.innerHTML += `
+
+            movieCardContainer.innerHTML += `
             <article class="movie-card">
                     <div>
                         <a
-                                    href="https://www.imdb.com/title/${currentMovie.imdbID}" 
-                                    target="_blank"
-                                    title="${currentMovie.Title} at IMDB.com"
-                                    
-                                >
-                                    <img src="${currentMovie.Poster}" class="movie-image">
-                                </a>
-
+                            href="https://www.imdb.com/title/${currentMovie.imdbID}" 
+                            target="_blank"
+                            title="${currentMovie.Title} at IMDB.com"
+                            
+                        >
+                            <img src="${currentMovie.Poster}" class="movie-image">
+                        </a>
                     </div>
                     <div>
-                        <div class="movie-title" data-imdb-id=${currentMovie.imdbID}>
+                        <div 
+                            class="movie-title" 
+                            data-imdb-id="${currentMovie.imdbID}"
+                            data-isFav="false"
+                            >
                             <h1>
                                 <a 
                                     href="https://www.imdb.com/title/${currentMovie.imdbID}" 
@@ -83,41 +85,40 @@ function renderMovies(movies) {
                             <span class="movie-runtime">
                                 ${currentMovie.Runtime}
                             </span>
-                            <button class="movie-card--add-to-watchlist">
-                                <i class="fa-solid fa-circle-plus"></i> 
+                            <span 
+                                class="movie-button-container movie-card--add-to-watchlist"
+                                data-button-imdb-id="${currentMovie.imdbID}"
+                            >
+                                <button class="movie-card--add-to-watchlist">
+                                <i class="fa-solid fa-circle-plus"></i>
                                 Watchlist
                             </button>
+                            </span>
+
                         </div>
                         <div class="movie-info" >
                             <p class="movie-info-genre">${currentMovie.Genre}</p>
                             <p>${currentMovie.Plot}</p>
                         </div>
-                    </di>
+                    </div>
                 </article>
         `
+        // console.log(newMovies)
+        
+    }
+    const movieButtonContainers = document.querySelectorAll('.movie-button-container')
+    
+    // check if the movie is on the watchlist and change watchlist button accordingly
+    // this could change to --remove from watchlist-- button
+    for (button of movieButtonContainers) {
+        const currentImdbID = button.getAttribute("data-button-imdb-id")
+        for (film of locallyStoredMovies) {
+            if (currentImdbID === film.imdbID) {
+                button.innerHTML = 'On Watchlist'
+            } 
+        }
     }
 
-//     const addToWatchlistButtons = document.querySelectorAll('.movie-card--add-to-watchlist')
-    
-//     for (let i = 0; i < addToWatchlistButtons.length; i++) {
-//         addToWatchlistButtons[i].addEventListener('click', function() {
-//             addToWatchlistButtons[i].innerHTML = 'On Watchlist'
-//             // addToWatchlistButtons[i].style.cursor = 'auto'
-//             const parentElement = addToWatchlistButtons[i].parentElement.previousElementSibling
-//             const thisMovieTitle = parentElement.firstElementChild.innerHTML.trim()
-//             movieObject = newMovies.reduce((oneMovie, currentMovie) => {
-//                 if (currentMovie.Title === thisMovieTitle) {
-//                     // console.log(currentMovie)
-//                     return currentMovie
-//                 } 
-
-//                 return oneMovie
-//             }, {})
-//             locallyStoredMovies.push(movieObject)
-//             localStorage.setItem('movies', JSON.stringify(locallyStoredMovies))
-//         })
-//     }
-// }
     const movieCards = document.querySelectorAll('.movie-card')
 
     for (let i = 0; i < movieCards.length; i++) {
@@ -126,13 +127,30 @@ function renderMovies(movies) {
         // and helps to uniqely identify the movie in the "newMovies" list.
         const currentImdbID = movieCard.querySelector(".movie-title").getAttribute("data-imdb-id")
         const addToWatchListButton = movieCard.querySelector(".movie-card--add-to-watchlist")
+        const watchlistButtonContainer = movieCard.querySelector(".movie-button-container") 
+        // if added to movies => eventlistenere remove
+        // if not added to movies => eventlistener add
+
+
         addToWatchListButton.addEventListener('click', function () {
-            addToWatchListButton.innerHTML = 'On Watchlist'
+            // Change watchlist button
+            watchlistButtonContainer.innerHTML = "Added"
+            setTimeout(function () { watchlistButtonContainer.innerHTML = "On Watchlist" }, 2000)
+
             // find() returns the first element that is matched the criteria (imdbId) or 'undefined' if not found
             // || {} handles the case when the find() returns undefined and returns an empty object
-            const movie = newMovies.find(movie => movie.imdbID == currentImdbID) || {}
-            locallyStoredMovies.push(movie)
-            console.log(locallyStoredMovies)
+            // here we could add a new key-value pair to the object and this could be checked and the right add/remove button could be rendered/displayed based on this 
+            const movie = {...newMovies.find(movie => movie.imdbID == currentImdbID), isFav: true} || {}
+
+            // check for duplicates
+            function pushToLocalMovies(array, item) {
+                if (!array.find( ({ imdbID }) => imdbID === item.imdbID)) {
+                    array.push(item)
+                }
+            }
+
+            pushToLocalMovies(locallyStoredMovies, movie)
+            
             localStorage.setItem('movies', JSON.stringify(locallyStoredMovies))
         })
     }

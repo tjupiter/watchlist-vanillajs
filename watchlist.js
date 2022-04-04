@@ -7,8 +7,6 @@ function getLocalMoviesData() {
 
 function loadLocalMovies() {
     getLocalMoviesData()
-    console.log(localMovies)
-
     renderMovies(localMovies)
 
     const removeFromWatchlistButtons = document.querySelectorAll('.remove-from-watchlist')
@@ -38,12 +36,26 @@ function renderMovies(moviesArray) {
             movieCardContainer.innerHTML += `
                 <article class="movie-card">
                         <div>
-                            <img src="${currentMovie.Poster}" class="movie-image">
+                            <a
+                            href="https://www.imdb.com/title/${currentMovie.imdbID}" 
+                            target="_blank"
+                            title="${currentMovie.Title} at IMDB.com"
+                            
+                            >
+                                <img src="${currentMovie.Poster}" class="movie-image">
+                            </a>
                         </div>
                         <div>
                             <div class="movie-title">
                                 <h1>
-                                    ${currentMovie.Title}
+                                    <a
+                                    href="https://www.imdb.com/title/${currentMovie.imdbID}" 
+                                    target="_blank"
+                                    title="${currentMovie.Title} at IMDB.com"
+                                    class="movie-title-link"
+                                    >
+                                        ${currentMovie.Title}
+                                    </a>
                                 </h1>
                             </div>
                             <div class="movie-tags">
