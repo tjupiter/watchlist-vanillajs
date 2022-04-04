@@ -1,4 +1,4 @@
-const movieCardContainer = document.getElementById('movie-section-container')
+const movieCardContainer = document.querySelector('.movie-section-container')
 var localMovies
 
 function getLocalMoviesData() {
@@ -7,6 +7,7 @@ function getLocalMoviesData() {
 
 function loadLocalMovies() {
     getLocalMoviesData()
+    console.log(localMovies)
 
     renderMovies(localMovies)
 
@@ -22,7 +23,7 @@ function renderMovies(moviesArray) {
 
     if (moviesArray === null || localMovies.length === 0) {
         movieCardContainer.innerHTML = `
-            <section id="nothing-to-show-div">
+            <section class="nothing-to-show-div">
                 <h2>Your watchlist is looking a little empty...</h2>
                 <a href="./index.html">
                 <i class="fa-solid fa-circle-plus"></i>
@@ -33,33 +34,34 @@ function renderMovies(moviesArray) {
     } else {
         movieCardContainer.innerHTML = ''
         for (let i = 0; i < moviesArray.length; i++) {
+            let currentMovie = moviesArray[i]
             movieCardContainer.innerHTML += `
                 <article class="movie-card">
                         <div>
-                            <img src="${moviesArray[i].Poster}" class="movie-image">
+                            <img src="${currentMovie.Poster}" class="movie-image">
                         </div>
                         <div>
                             <div class="movie-title">
                                 <h1>
-                                    ${moviesArray[i].Title}
+                                    ${currentMovie.Title}
                                 </h1>
                             </div>
                             <div class="movie-tags">
                                 <span class="star-span">
                                     <i class="fa-solid fa-star"></i>
-                                    ${moviesArray[i].imdbRating}
+                                    ${currentMovie.imdbRating}
                                 </span>
                                 <span class="movie-runtime">
-                                    ${moviesArray[i].Runtime}
+                                    ${currentMovie.Runtime}
                                 </span>
-                                <button class="remove-from-watchlist">
+                                <button class="remove-from-watchlist" data-imdb-id=${currentMovie.imdbID}>
                                     <i class="fa-solid fa-circle-minus"></i>
                                     Remove
                                 </button>
                             </div>
                             <div class="movie-info">
-                                <p>${moviesArray[i].Genre}</p>
-                                <p>${moviesArray[i].Plot}</p>
+                                <p>${currentMovie.Genre}</p>
+                                <p>${currentMovie.Plot}</p>
                             </div>
                         </di>
                     </article>
@@ -69,13 +71,11 @@ function renderMovies(moviesArray) {
 }
 
 function removeMovie() {
-    const parentElement = this.parentElement.previousElementSibling
-    const thisMovieTitle = parentElement.firstElementChild.innerHTML.trim()
-
-    updatedMovies = localMovies.filter(movie => movie.Title != thisMovieTitle)
+    // 'data-movie-id' html data-attribute stored on the remove button for easier access ==> this.getAttribute
+    currentImdbID = this.getAttribute("data-imdb-id")
+    updatedMovies = localMovies.filter(movie => movie.imdbID != currentImdbID)
     localStorage.setItem('movies', JSON.stringify(updatedMovies))
     getLocalMoviesData()
-
     loadLocalMovies()
 }
 
@@ -83,7 +83,7 @@ function removeMovie() {
 function clearLocalMovies() {
     localStorage.clear();
     movieCardContainer.innerHTML = `
-        <section id="nothing-to-show-div">
+        <section class="nothing-to-show-div">
             <h2>Your watchlist is looking a little empty...</h2>
             <a href="./index.html">
                 <i class="fa-solid fa-circle-plus"></i>

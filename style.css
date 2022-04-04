@@ -14,7 +14,7 @@ header {
     padding: 0 .5rem;
 }
 
-#header--text-container {
+.header--text-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,19 +23,19 @@ header {
     margin: 0 auto;
 }
 
-#header--text-container h1 {
+.header--text-container h1 {
     color: white;
     font-size: 2rem;
 }
 
-#header--text-container a {
+.header--text-container a {
     text-decoration: none;
     color: white;
     font-size: .8rem;
     font-weight: 300;
 }
 
-#header--search-bar {
+.search-bar {
     display: flex;
     align-items: center;
     margin: -.8rem 2rem 0;
@@ -43,14 +43,14 @@ header {
     position: relative;
 }
 
-#search-bar-magnifying-glass {
+.search-bar--magnifying-glass {
     position: absolute;
     align-self: center;
     left: 10px;
     color: lightgray
 }
 
-#header--search-bar input {
+.search-bar input {
     width: 70%;
     height: 100%;
     padding: .5rem 0;
@@ -62,15 +62,19 @@ header {
     -webkit-border-bottom-left-radius: 5px;
 }
 
-#header--search-bar input:focus,
-#header--search-bar button:focus,
-#header--watchlist:focus {
+.search-bar input:focus,
+.search-bar button:focus {
     outline: none;
-    border-bottom: 3px solid blue;
+    background-color: rgb(231, 246, 254);
+}
+
+.header--watchlist:focus {
+    outline: none;
+    border-bottom: 3px solid rgb(229, 246, 255);
     transition: .2s all ease-in-out;
 }
 
-#header--search-bar button {
+.search-bar button {
     width: 30%;
     height: 100%;
     padding: .5rem 1.5rem;
@@ -84,11 +88,11 @@ header {
 }
 
 
-#figure-container {
+.figure-container {
     display: block;
 }
 
-#loading-movies {
+.loading-movies {
     text-align: center;
     margin-top: 1.2rem;
 }
@@ -123,7 +127,7 @@ main {
     margin: 0 auto;
 }
 
-#movie-section-container {
+.movie-section-container {
     margin: 2rem auto;
     display: flex;
     flex-direction: column;
@@ -132,7 +136,7 @@ main {
     gap: 2rem;
 }
 
-#movie-card-container {
+.movie-card-container {
     display: block;
     margin: 1rem 0;
 }
@@ -160,6 +164,15 @@ main {
     margin-bottom: .5rem;
 }
 
+.movie-title-link {
+    text-decoration: none;
+    color: black;
+}
+
+.movie-title-link:focus {
+    text-decoration: underline;
+}
+
 .movie-tags {
     margin-bottom: .5rem;
     display: flex;
@@ -173,7 +186,6 @@ main {
 .movie-runtime {
     margin-right: auto;
 }
-
 
 .movie-image {
     width: 100%;
@@ -196,11 +208,13 @@ main {
 .movie-card--add-to-watchlist:focus,
 .remove-from-watchlist:focus {
     outline: none;
-    border-bottom: 3px solid blue;
+    background-color: black;
+    color: white;
+    padding: 0.2rem 1rem;
     transition: .2s all ease-in-out;
 }
 
-#nothing-to-show-div {
+.nothing-to-show-div {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -208,7 +222,7 @@ main {
     text-align: center;
 }
 
-#nothing-to-show-div h2 {
+.nothing-to-show-div h2 {
     color: #DFDDDD;
     text-transform: uppercase;
     font-weight: 800;
@@ -217,14 +231,16 @@ main {
     margin-bottom: 1rem;
 }
 
-#nothing-to-show-div a {
+.nothing-to-show-div a {
     text-decoration: none;
     color: black;
     font-weight: 800;
 }
 
-#nothing-to-show-div a:focus {
+.nothing-to-show-div a:focus {
     outline: none;
-    border-bottom: 3px solid blue;
+    background-color: black;
+    color: white;
+    padding: 0.2rem 1rem;
     transition: .2s all ease-in-out;
 }
