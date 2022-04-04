@@ -17,14 +17,34 @@ function getMovie(e) {
                     <h2>Loading movies...</h2>
                 </div>
         `
+        // const timeOut = setTimeout(stillLoading, 1500)
+       
+            
+        // function stillLoading() { 
+        //     movieCardContainer.innerHTML = `
+        //         <div class="loading-movies">
+        //             <h2>Still loading...</h2>
+        //         </div>
+        // ` };
         figureContainer.style.display = 'none';
         fetch(`https://www.omdbapi.com/?apikey=8d903893&s=${searchBarValue}`)
             .then(res => res.json())
-            .then(data => populateMovies(data.Search))
-        // const movies = await res.json()
-        // populateMovies(movies.Search)
-        // console.log(movies)
-        // 
+            .then(data => {
+                if(data.Response === 'False') {
+                    movieCardContainer.innerHTML = `
+                            <div class="loading-movies">
+                                <h2>Movie Not Found</h2>
+                            </div>
+                    `
+                } else {
+                    return populateMovies(data.Search)
+                }
+                
+            })
+            // const movies = await res.json()
+            // populateMovies(movies.Search)
+            // console.log(movies)
+            // 
     }
 
     document.querySelector('.search-bar--input').value = null
@@ -135,7 +155,7 @@ function renderMovies(movies) {
         addToWatchListButton.addEventListener('click', function () {
             // Change watchlist button
             watchlistButtonContainer.innerHTML = "Added"
-            setTimeout(function () { watchlistButtonContainer.innerHTML = "On Watchlist" }, 2000)
+            setTimeout(function () { watchlistButtonContainer.innerHTML = "On Watchlist" }, 700)
 
             // find() returns the first element that is matched the criteria (imdbId) or 'undefined' if not found
             // || {} handles the case when the find() returns undefined and returns an empty object

@@ -28,7 +28,7 @@ header {
     font-size: 2rem;
 }
 
-.header--text-container a {
+.header--watchlist {
     text-decoration: none;
     color: white;
     font-size: .8rem;
@@ -248,5 +248,12 @@ main {
 @media screen and (max-height: 400px) {
     figure {
         display: none;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .header--watchlist {
+        font-size: 1.2rem;
+        font-weight: bolder;
     }
 }
