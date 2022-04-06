@@ -1,4 +1,5 @@
 let searchBarValue, moviesFromSearch
+
 const movieCardContainer = document.querySelector('.movie-section-container')
 const figureContainer = document.querySelector('.figure-container')
 
@@ -17,23 +18,19 @@ function getMovie(e) {
                     <h2>Loading movies...</h2>
                 </div>
         `
-        // const timeOut = setTimeout(stillLoading, 1500)
-       
-            
-        // function stillLoading() { 
-        //     movieCardContainer.innerHTML = `
-        //         <div class="loading-movies">
-        //             <h2>Still loading...</h2>
-        //         </div>
-        // ` };
+        // here with setTimeOut() 'Still Loading' should be addig when fetching the data takes a long time
+        // or Loading movie should be animated so it feels like it's actually loading even when it takes long
+
+
         figureContainer.style.display = 'none';
+
         fetch(`https://www.omdbapi.com/?apikey=8d903893&s=${searchBarValue}`)
             .then(res => res.json())
             .then(data => {
                 if(data.Response === 'False') {
                     movieCardContainer.innerHTML = `
                             <div class="loading-movies">
-                                <h2>Movie Not Found</h2>
+                                <h2>No Movies Found</h2>
                             </div>
                     `
                 } else {
@@ -41,17 +38,15 @@ function getMovie(e) {
                 }
                 
             })
-            // const movies = await res.json()
-            // populateMovies(movies.Search)
-            // console.log(movies)
-            // 
     }
 
     document.querySelector('.search-bar--input').value = null
 }
 
+
 async function populateMovies(results) {
     let resultsWithExtraData = []
+    // get extended movie info based on IMDB ID
     for ( let i = 0; i < results.length; i++) {
         const res = await fetch(`https://www.omdbapi.com/?apikey=324df79f&i=${results[i].imdbID}`)
         const data = await res.json()
@@ -65,6 +60,7 @@ function renderMovies(movies) {
     movieCardContainer.innerHTML = ''
     const newMovies = [...movies]
     
+    // render individual movie cards
     for (let i = 0; i < newMovies.length; i++) {
         let currentMovie = newMovies[i]
 
@@ -106,7 +102,7 @@ function renderMovies(movies) {
                                 ${currentMovie.Runtime}
                             </span>
                             <span 
-                                class="movie-button-container movie-card--add-to-watchlist"
+                                class="movie-button-container "
                                 data-button-imdb-id="${currentMovie.imdbID}"
                             >
                                 <button class="movie-card--add-to-watchlist">
@@ -126,53 +122,60 @@ function renderMovies(movies) {
         // console.log(newMovies)
         
     }
+
     const movieButtonContainers = document.querySelectorAll('.movie-button-container')
     
     // check if the movie is on the watchlist and change watchlist button accordingly
     // this could change to --remove from watchlist-- button
-    for (button of movieButtonContainers) {
-        const currentImdbID = button.getAttribute("data-button-imdb-id")
+    for (buttonContainer of movieButtonContainers) {
+        const currentImdbID = buttonContainer.getAttribute("data-button-imdb-id")
         for (film of locallyStoredMovies) {
             if (currentImdbID === film.imdbID) {
-                button.innerHTML = 'On Watchlist'
+                buttonContainer.innerHTML = `<span>On Watchlist</span>`
             } 
         }
     }
 
     const movieCards = document.querySelectorAll('.movie-card')
 
+    // add EventListener to each button in movie cards
     for (let i = 0; i < movieCards.length; i++) {
         const movieCard = movieCards[i]
+
         // The imdb-id property stores a unique identifier for the movie 
         // and helps to uniqely identify the movie in the "newMovies" list.
         const currentImdbID = movieCard.querySelector(".movie-title").getAttribute("data-imdb-id")
         const addToWatchListButton = movieCard.querySelector(".movie-card--add-to-watchlist")
         const watchlistButtonContainer = movieCard.querySelector(".movie-button-container") 
+        
+        // Later this should bit of code should get updated with:
         // if added to movies => eventlistenere remove
         // if not added to movies => eventlistener add
 
+        if (addToWatchListButton) {
 
-        addToWatchListButton.addEventListener('click', function () {
-            // Change watchlist button
-            watchlistButtonContainer.innerHTML = "Added"
-            setTimeout(function () { watchlistButtonContainer.innerHTML = "On Watchlist" }, 700)
-
-            // find() returns the first element that is matched the criteria (imdbId) or 'undefined' if not found
-            // || {} handles the case when the find() returns undefined and returns an empty object
-            // here we could add a new key-value pair to the object and this could be checked and the right add/remove button could be rendered/displayed based on this 
-            const movie = {...newMovies.find(movie => movie.imdbID == currentImdbID), isFav: true} || {}
-
-            // check for duplicates
-            function pushToLocalMovies(array, item) {
-                if (!array.find( ({ imdbID }) => imdbID === item.imdbID)) {
-                    array.push(item)
+            addToWatchListButton.addEventListener('click', function () {
+                // Change watchlist button on click
+                watchlistButtonContainer.innerHTML = `<span>Added</span>`
+                setTimeout(function () { watchlistButtonContainer.innerHTML = `<span>On Watchlist</span>` }, 700)
+    
+                // find() returns the first element that is matched the criteria (imdbId) or 'undefined' if not found
+                // || {} handles the case when the find() returns undefined and returns an empty object
+                // here we could add a new key-value pair to the object and this could be checked and the right add/remove button could be rendered/displayed based on this 
+                const movie = {...newMovies.find(movie => movie.imdbID == currentImdbID), isFav: true} || {}
+    
+                // check for duplicates
+                function pushToLocalMovies(array, item) {
+                    if (!array.find( ({ imdbID }) => imdbID === item.imdbID)) {
+                        array.push(item)
+                    }
                 }
-            }
-
-            pushToLocalMovies(locallyStoredMovies, movie)
-            
-            localStorage.setItem('movies', JSON.stringify(locallyStoredMovies))
-        })
+    
+                pushToLocalMovies(locallyStoredMovies, movie)
+                
+                localStorage.setItem('movies', JSON.stringify(locallyStoredMovies))
+            })
+        }
     }
 }
 

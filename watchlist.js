@@ -24,7 +24,7 @@ function renderMovies(moviesArray) {
             <section class="nothing-to-show-div">
                 <h2>Your watchlist is looking a little empty...</h2>
                 <a href="./index.html">
-                <i class="fa-solid fa-circle-plus"></i>
+                    <i class="fa-solid fa-circle-plus"></i>
                     Let's add some movies
                 </a>
             </section>
