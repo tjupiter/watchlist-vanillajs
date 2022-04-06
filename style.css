@@ -57,7 +57,7 @@ header {
 }
 
 .search-bar--magnifying-glass svg {
-    color: lightgray;
+    fill: darkgray;
 }
 
 .search-bar input {
