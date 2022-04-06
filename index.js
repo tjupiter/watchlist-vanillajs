@@ -20,9 +20,6 @@ function getMovie(e) {
                     <h2>Loading movies...</h2>
                 </div>
         `
-        // here with setTimeOut() 'Still Loading' should be addig when fetching the data takes a long time
-        // or Loading movie should be animated so it feels like it's actually loading even when it takes long
-
 
         figureContainer.style.display = 'none';
 
