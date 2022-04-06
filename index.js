@@ -4,7 +4,9 @@ const movieCardContainer = document.querySelector('.movie-section-container')
 const figureContainer = document.querySelector('.figure-container')
 
 var locallyStoredMovies = JSON.parse(localStorage.getItem("movies"))
-// console.log(locallyStoredMovies)
+if (locallyStoredMovies === null) {
+    locallyStoredMovies = []
+}
 
 function getMovie(e) {
     e.preventDefault();
@@ -127,11 +129,12 @@ function renderMovies(movies) {
     
     // check if the movie is on the watchlist and change watchlist button accordingly
     // this could change to --remove from watchlist-- button
+
     for (buttonContainer of movieButtonContainers) {
         const currentImdbID = buttonContainer.getAttribute("data-button-imdb-id")
         for (film of locallyStoredMovies) {
             if (currentImdbID === film.imdbID) {
-                buttonContainer.innerHTML = `<span>On Watchlist</span>`
+                buttonContainer.innerHTML = `<span class="movie-card--on-watchlist">On Watchlist</span>`
             } 
         }
     }
@@ -157,7 +160,7 @@ function renderMovies(movies) {
             addToWatchListButton.addEventListener('click', function () {
                 // Change watchlist button on click
                 watchlistButtonContainer.innerHTML = `<span>Added</span>`
-                setTimeout(function () { watchlistButtonContainer.innerHTML = `<span>On Watchlist</span>` }, 700)
+                setTimeout(function () { watchlistButtonContainer.innerHTML = `<span class="movie-card--on-watchlist">On Watchlist</span>` }, 700)
     
                 // find() returns the first element that is matched the criteria (imdbId) or 'undefined' if not found
                 // || {} handles the case when the find() returns undefined and returns an empty object

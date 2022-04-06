@@ -243,6 +243,10 @@ main {
     transition: .2s all ease-in-out;
 }
 
+.movie-card--on-watchlist {
+    font-size: .9rem;
+}
+
 .nothing-to-show-div {
     position: absolute;
     top: 50%;
