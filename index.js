@@ -60,11 +60,11 @@ function renderMovies(movies) {
     const newMovies = [...movies]
     
     // render individual movie cards
-    for (let i = 0; i < newMovies.length; i++) {
+    for (let i = 1; i < newMovies.length; i++) {
         let currentMovie = newMovies[i]
 
             movieCardContainer.innerHTML += `
-            <article class="movie-card">
+            <article class="movie-card" data-aos="zoom-in" data-aos-delay="${i * 100}">
                     <div>
                         <a
                             href="https://www.imdb.com/title/${currentMovie.imdbID}" 

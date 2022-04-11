@@ -106,3 +106,4 @@ function clearLocalMovies() {
 }
 
 loadLocalMovies();
+
